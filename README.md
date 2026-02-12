@@ -9,19 +9,20 @@
 
 ## ✨ Features
 
-- � **Real-time Weather Integration** - Connect to any city worldwide and get current weather conditions
-- 🎨 **AI Image Generation** - Powered by Gemini AI to create stunning city-specific dioramas
-- 🏙️ **Isometric 3D Art** - Beautiful miniature dioramas with tilt-shift photography effects
-- 🌈 **Weather-based Visual Effects** - Dynamic glow and borders that reflect current weather conditions
-- � **City Recognition** - Each diorama features iconic landmarks and architectural elements specific to the selected city
-- � **Modern UI** - Sleek, responsive interface with smooth animations and interactions
+- 🌍 **Real-time Weather Integration** — Connect to any city worldwide and get current weather conditions
+- 🎨 **AI Image Generation** — Powered by Gemini AI to create stunning city-specific dioramas
+- 🏙️ **Isometric 3D Art** — Beautiful miniature dioramas with tilt-shift photography effects
+- 🌈 **Weather-based Visual Effects** — Dynamic glow and borders that reflect current weather conditions
+- 📍 **City Recognition** — Each diorama features iconic landmarks and architectural elements specific to the selected city
+- 💎 **Modern UI** — Sleek, responsive interface with smooth animations and interactions
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - npm or yarn
-- Gemini API key (free)
+- A free [Gemini API Key](https://aistudio.google.com/apikey)
 
 ### Installation
 
@@ -41,36 +42,29 @@ cp .env.example .env
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to start creating beautiful weather dioramas! 🎨
+Open [http://localhost:3000](http://localhost:3000) to start creating beautiful weather dioramas!
 
 ## 🎨 How It Works
 
-1. **Search for any city** worldwide 🌍
-2. **Get real-time weather data** 🌡️
-3. **Generate AI diorama** with city-specific landmarks 🏗️
-4. **Apply weather-based visual effects** ✨
-5. **Download or share** your creation 💾
+1. **Search for any city** worldwide
+2. **Get real-time weather data** from Open-Meteo (free, no API key needed)
+3. **Generate an AI diorama** with city-specific landmarks via Gemini
+4. **Weather-based visual effects** are applied dynamically (glow borders, particles)
+5. **Download or share** your creation
 
-## 🏗️ Technology Stack
+## 🏗️ Tech Stack
 
-- **Frontend:** Next.js 14 with TypeScript
-- **Styling:** Tailwind CSS with custom weather effects
-- **Animations:** Framer Motion
-- **Icons:** Lucide React
-- **State Management:** Zustand
-- **AI:** Google Gemini API
-- **Storage:** IndexedDB for images, localStorage for metadata
-- **Deployment:** Vercel (continuous deployment)
-
-## � Sample Generated Dioramas
+| Technology | Purpose |
 |------------|---------|
 | [Next.js 14](https://nextjs.org/) | React framework |
 | [TypeScript](https://www.typescriptlang.org/) | Type safety |
 | [Tailwind CSS](https://tailwindcss.com/) | Styling |
 | [Framer Motion](https://www.framer.com/motion/) | Animations |
 | [Zustand](https://zustand-demo.pmnd.rs/) | State management |
+| [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) | Image caching |
 | [Open-Meteo](https://open-meteo.com/) | Weather data (free) |
-| [Gemini AI](https://ai.google.dev/) | Image generation |
+| [Google Gemini](https://ai.google.dev/) | AI image generation |
+| [Lucide React](https://lucide.dev/) | Icons |
 
 ## 📁 Project Structure
 
@@ -78,19 +72,21 @@ Open [http://localhost:3000](http://localhost:3000) to start creating beautiful 
 skydiorama/
 ├── src/
 │   ├── app/
-│   │   ├── globals.css      # Global styles
-│   │   ├── layout.tsx       # Root layout
-│   │   └── page.tsx         # Main page
+│   │   ├── globals.css        # Global styles + weather effects
+│   │   ├── layout.tsx         # Root layout
+│   │   └── page.tsx           # Main page
 │   ├── components/
-│   │   ├── CityList.tsx     # Saved cities list
-│   │   ├── CitySearch.tsx   # City search input
-│   │   ├── DioramaDisplay.tsx # Main diorama view
-│   │   ├── SettingsPanel.tsx  # Settings & BYOK
-│   │   └── WeatherInfo.tsx  # Weather details
+│   │   ├── CityList.tsx       # Saved cities list
+│   │   ├── CitySearch.tsx     # City search input
+│   │   ├── DioramaDisplay.tsx # Main diorama view + weather glow
+│   │   ├── SettingsPanel.tsx  # Settings & API key input
+│   │   └── WeatherInfo.tsx    # Weather details card
 │   └── lib/
-│       ├── gemini.ts        # Gemini API client
-│       ├── store.ts         # Zustand store
-│       └── weather.ts       # Weather API client
+│       ├── gemini.ts          # Gemini API client + prompt builder
+│       ├── image-cache.ts     # IndexedDB image storage
+│       ├── store.ts           # Zustand store
+│       ├── weather.ts         # Open-Meteo API client
+│       └── utils.ts           # Helper functions
 ├── public/
 ├── tailwind.config.js
 ├── next.config.js
@@ -99,41 +95,26 @@ skydiorama/
 
 ## 🎨 The Diorama Prompt
 
-The magic happens with this carefully crafted prompt:
+The magic happens in `src/lib/gemini.ts` with a carefully crafted prompt that:
 
-```
-Present a clear, 45° top-down isometric miniature 3D cartoon scene of {CITY}, 
-featuring its most iconic landmarks and architectural elements.
+- Requests a **45° isometric miniature 3D scene** of the specific city
+- Emphasizes **real landmarks and architectural identity** (not generic buildings)
+- Integrates **current weather conditions** into the scene naturally
+- Maintains **vibrant, natural colors** without artificial filters
+- Adds a **text overlay** with city name, weather icon, and temperature
 
-Use soft, refined textures with realistic PBR materials and gentle, lifelike 
-{lighting based on time of day}. 
+The prompt explicitly enforces color fidelity — weather affects lighting and shadows, but never washes out the palette. Each city should be recognizable at a glance.
 
-Current weather: {condition}, {temperature}°C, {time of day}.
-{Weather-specific effects like rain, snow, fog}
-
-Create an immersive {atmospheric mood} atmosphere. Use a clean, minimalistic 
-composition with a soft, solid-colored background.
-
-At the top-center, place the title "{CITY}" in large bold text, a prominent 
-weather icon, then the temperature. All text centered with consistent spacing.
-
-Style: Adorable miniature diorama, tilt-shift effect, highly detailed, 
-professional quality, award-winning illustration.
-```
-
-Feel free to modify it in `src/lib/gemini.ts`!
+Feel free to tweak it and experiment!
 
 ## 🤝 Contributing
 
-We welcome contributions! Here's how you can help:
+Contributions are welcome! Here's how you can help:
 
-### Ways to Contribute
-
-- 🐛 **Report Bugs** - Open an issue describing the bug
-- 💡 **Suggest Features** - Share your ideas in Discussions
-- 🔧 **Submit PRs** - Fix bugs or add features
-- 📖 **Improve Docs** - Help make our docs better
-- 🌍 **Add Translations** - Help us go multilingual
+- 🐛 **Report Bugs** — Open an issue describing the bug
+- 💡 **Suggest Features** — Share your ideas in Discussions
+- 🔧 **Submit PRs** — Fix bugs or add features
+- 📖 **Improve Docs** — Help make our docs better
 
 ### Development Setup
 
@@ -151,36 +132,29 @@ git commit -m 'Add amazing feature'
 git push origin feature/amazing-feature
 ```
 
-### Contribution Ideas
+### Ideas for Contributions
 
 - [ ] Add more weather conditions (aurora, sandstorm, etc.)
-- [ ] Implement image caching system
-- [ ] Add widget support for mobile (React Native)
-- [ ] Create a live wallpaper service
 - [ ] Add support for alternative AI providers (DALL-E, Stable Diffusion)
 - [ ] Implement hourly auto-refresh
 - [ ] Add PWA support
-- [ ] Create browser extension
+- [ ] Create a browser extension
+- [ ] Add widget support for mobile
 
 ## 📄 License
 
-MIT License - feel free to use this project for anything!
+MIT License — feel free to use this project for anything!
 
 ## 🙏 Acknowledgments
 
-- Inspired by [CitiScene](https://citiscene.app/) - the original idea
+- Inspired by [CitiScene](https://citiscene.app/)
 - [Open-Meteo](https://open-meteo.com/) for the free weather API
 - [Google Gemini](https://ai.google.dev/) for AI image generation
-- The open-source community ❤️
-
-## ⭐ Star History
-
-If you find this project useful, please give it a star! It helps others discover it.
 
 ---
 
 <p align="center">
-  Made with ❤️ by Gab Lima
+  Made with ❤️ by <a href="https://github.com/ehgzao">Gab Lima</a>
   <br>
-  <a href="https://github.com/ehgzao/skydiorama">Star on GitHub</a>
+  <a href="https://github.com/ehgzao/skydiorama">⭐ Star on GitHub</a>
 </p>
