@@ -180,7 +180,7 @@ If you find this project useful, please give it a star! It helps others discover
 ---
 
 <p align="center">
-  Made with ❤️ by the community
+  Made with ❤️ by Gab Lima
   <br>
-  <a href="https://github.com/skydiorama/skydiorama">Star on GitHub</a>
+  <a href="https://github.com/ehgzao/skydiorama">Star on GitHub</a>
 </p>
