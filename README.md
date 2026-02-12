@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-![SkyDiorama Preview](./preview.png)
+<img width="2912" height="1440" alt="Image" src="https://github.com/user-attachments/assets/6df4d716-5a0d-457e-a3a4-e1af48fa7573">
 
 ## ✨ Features
 
